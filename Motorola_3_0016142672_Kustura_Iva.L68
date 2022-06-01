@@ -1,0 +1,142 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v3.1 April 19, 2005
+Created On: 5.2.2021. 12:20:10
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Program Number:3.
+00000000                             3  * Written by    :Iva Kustura
+00000000                             4  * Date Created  :21.1.2021.
+00000000                             5  * Description   :suma i broj brojeva
+00000000                             6  *
+00000000                             7  *-----------------------------------------------------------
+00000000                             8  
+00001000                             9  START   ORG     $1000
+00001000                            10  
+00001000  303C 000E                 11          MOVE #14,D0                                     
+00001004  43F9 00001110             12          LEA dat,A1                      
+0000100A  4E4F                      13          TRAP #15                        
+0000100C                            14          
+0000100C  103C 0002                 15          MOVE.B #2,D0                    
+00001010  43F9 0000112C             16          LEA.L unos,A1           
+00001016  4E4F                      17          TRAP #15                
+00001018                            18          
+00001018  103C 0033                 19          MOVE.B #51,D0           
+0000101C  4E4F                      20          TRAP #15                
+0000101E                            21  
+0000101E  303C 0035                 22          MOVE #53,D0             
+00001022  7450                      23          MOVE.L #80,D2           
+00001024  43F9 0000117C             24          LEA ispis,A1            
+0000102A  4E4F                      25          TRAP #15        
+0000102C                            26          
+0000102C  303C 000D                 27          MOVE #13,D0     
+00001030  43F9 0000117C             28          LEA.L ispis,A1  
+00001036  4E4F                      29          TRAP #15                
+00001038                            30  
+00001038  2449                      31          MOVE.L A1,A2            
+0000103A                            32  
+0000103A  363C 0000                 33          MOVE #0,D3              
+0000103E  383C 0001                 34          MOVE #1,D4
+00001042                            35  
+00001042  0C11 0020                 36  HD      CMP.B #$20,(A1)
+00001046  6714                      37          BEQ.B S
+00001048  0C11 002E                 38          CMP.B #$2E,(A1)
+0000104C  6718                      39          BEQ.B PJ
+0000104E  0411 0030                 40          SUB.B #$30,(A1)
+00001052  D3FC 00000001             41          ADD.L #1,A1
+00001058  4EF8 1042                 42          JMP HD
+0000105C                            43  
+0000105C  D3FC 00000001             44  S       ADD.L #1,A1
+00001062  4EF8 1042                 45          JMP HD                                  
+00001066                            46  
+00001066  0C12 002E                 47  PJ      CMP.B #$2E,(A2)                 
+0000106A  677E                      48          BEQ.B KRAJ
+0000106C  0C12 0020                 49          CMP.B #$20,(A2)                 
+00001070  676C                      50          BEQ.B RAZMAK             
+00001072  1A1A                      51          MOVE.B (A2)+,D5                 
+00001074  4EF9 0000107A             52          JMP PD  
+0000107A                            53  
+0000107A  0C12 0020                 54  PD      CMP.B #$20,(A2)                 
+0000107E  6722                      55          BEQ.B JEDAN             
+00001080  0C12 002E                 56          CMP.B #$2E,(A2)                 
+00001084  671C                      57          BEQ.B JEDAN             
+00001086  1C1A                      58          MOVE.B (A2)+,D6                 
+00001088  4EF9 0000108E             59          JMP PT          
+0000108E                            60  
+0000108E  0C12 0020                 61  PT      CMP.B #$20,(A2)
+00001092  6718                      62          BEQ.B DESET              
+00001094  0C12 002E                 63          CMP.B #$2E,(A2)                 
+00001098  6712                      64          BEQ.B DESET             
+0000109A  1E1A                      65          MOVE.B (A2)+,D7                 
+0000109C  4EF9 000010C0             66          JMP STO                 
+000010A2                            67  
+000010A2  D645                      68  JEDAN   ADD.W D5,D3                     
+000010A4  3A3C 0000                 69          MOVE #0,D5                              
+000010A8  4EF8 1066                 70          JMP PJ          
+000010AC                            71  
+000010AC  CAFC 000A                 72  DESET   MULU.W #10,D5                                   
+000010B0  DA86                      73          ADD.L D6,D5                                     
+000010B2  D645                      74          ADD.W D5,D3                             
+000010B4  3A3C 0000                 75          MOVE #0,D5                                      
+000010B8  3C3C 0000                 76          MOVE #0,D6                              
+000010BC  4EF8 1066                 77          JMP PJ                  
+000010C0                            78  
+000010C0  CAFC 0064                 79  STO     MULU.W #100,D5                                  
+000010C4  CCFC 000A                 80          MULU.W #10,D6                                   
+000010C8  DC87                      81          ADD.L D7,D6                                     
+000010CA  DA86                      82          ADD.L D6,D5                                     
+000010CC  D645                      83          ADD.W D5,D3                             
+000010CE  3A3C 0000                 84          MOVE #0,D5                                      
+000010D2  3C3C 0000                 85          MOVE #0,D6                                      
+000010D6  3E3C 0000                 86          MOVE #0,D7                                      
+000010DA  4EF8 1066                 87          JMP PJ                  
+000010DE                            88  
+000010DE  D5FC 00000001             89  RAZMAK  ADD.L #1,A2
+000010E4  5204                      90          ADD.B #1,D4                                     
+000010E6  4EF8 1066                 91          JMP PJ                  
+000010EA                            92                   
+000010EA                            93  KRAJ                            
+000010EA  303C 0003                 94          MOVE #3,D0                      
+000010EE  3203                      95          MOVE D3,D1                       
+000010F0  4E4F                      96          TRAP #15                        
+000010F2                            97  
+000010F2  303C 000E                 98          MOVE #14,D0                     
+000010F6  43F9 0000112A             99          LEA raz,A1                      
+000010FC  4E4F                     100          TRAP #15                        
+000010FE                           101  
+000010FE  103C 0003                102          MOVE.B #3,D0                    
+00001102  3204                     103          MOVE.W D4,D1                    
+00001104  4E4F                     104          TRAP #15                        
+00001106                           105  
+00001106                           106          
+00001106  103C 0009                107          MOVE.B  #9,D0                           
+0000110A  4E4F                     108          TRAP    #15
+0000110C                           109  
+0000110C  4E72 2000                110          STOP #$2000
+00001110  55 6E 65 73 69 74 ...    111  dat             DC.B 'Unesite naziv datoteke:',$D,$A,0
+0000112A  20 00                    112  raz             DC.B ' ',0
+0000112C                           113  unos            DS.B 80                                 
+0000117C                           114  ispis           DS.B 80
+000011CC                           115                  END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DAT                 1110
+DESET               10AC
+HD                  1042
+ISPIS               117C
+JEDAN               10A2
+KRAJ                10EA
+PD                  107A
+PJ                  1066
+PT                  108E
+RAZ                 112A
+RAZMAK              10DE
+S                   105C
+START               1000
+STO                 10C0
+UNOS                112C
